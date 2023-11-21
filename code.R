@@ -17,6 +17,8 @@ library(vars)
 filenames <- list.files("data/raw", pattern="*.xlsx", full.names = F)
 dir_path <-"~/GitHub/wasteWaterVirus/data/raw/"
 
+#I added headers to the data
+
 # read all data in the folder and save as a list
 datalist <- list()
 for (i in 1:length(filenames)){
@@ -276,6 +278,18 @@ print(ccf(ln_gene3_copy, ln_inc)) # others some lags but low
 # sometimes every 5-10 lag is correlated or so 
 # but no obvious seasonality 
 
+# Let's combine all different genotypes, maybe predictions can get better
+
+multiTS6.all  <- ts(data = na.approx(zoo(leipzig_noro[3:6])))
+ndiffs(multiTS6.all) 
+acf(multiTS6.all)
+
+multiTS6.all_diff <- diff(multiTS6.all) # pre-whitening :D
+var6.all <- VAR(multiTS6.all_diff, lag.max = 3)
+summary(var6.all)
+# well 3 genotype model doesn't converge, maybe the genotypes are too correlated
+# removed some variables and tried, genotype 3 is more correlated with the incidence
+
 ###############
 # freiberg_sars
 ###############
@@ -295,7 +309,7 @@ plot(forecast_multi5)
 # cross correlations
 fs_copy <- diff(extrapolate(freiberg_sars$copy))
 fs_inc  <- diff(extrapolate(freiberg_sars$incidence))
-print(ccf(fs_copy, fs_inc)) # meh
+print(ccf(fs_copy, fs_inc)) # seems correlated 
 
 ################
 # freiberg fluA
@@ -358,4 +372,40 @@ fr_copy <- diff(extrapolate(freiberg_rota$copy))
 fr_inc  <- diff(extrapolate(freiberg_rota$incidence))
 print(ccf(fr_copy, fr_inc)) # yeah pretty much copy number follows incidence with lag 1 
 # 0.474 correlation coefficient
+
+# What goes to the paper?
+
+# predictions and correlation plots can go to the supplementary 
+# it is maybe prettier to scrape data and plot in ggplot
+
+# Hypothesis: Virus load in sewage correlates with number of reported cases
+# summary correlation plot, find an example?
+# there are some lags correlataed 
+
+# there might be an effect of the different four waves on the
+# virus load (see figure I sent you on whats app). We had different virus
+# variants during the waves that replicate more or less efficient in the
+# gut what influences the shedding.
+
+# Some series are following each other, pretty good. 
+# In some cases incidences follow sewage with some lag, this is good too. 
+
+#For Norovirus: reported data are for Norovirus disease (a confirmed
+#norovirus infection). They do not include genotyping. It would be
+#interesting to see whether the two genotypes detected from sewage do
+#correlate individually with reported data or (also or only together).
+
+# some genotypes are predicting better 
+# maybe add all to the model
+# it can be complicated but we can try
+# I'll go try above but maybe with 3 lags each max
+
+
+# Here I'll try a plot with one dataset
+leip_sars_plot <- leip_sars %>% 
+  mutate(x = make_date(paste0(20,year))) %>% 
+  mutate(date = x + lubridate::weeks(week-1)) %>%
+  ggplot(aes(date, incidence)) +
+    geom_line()+
+    scale_x_date(date_labels = "%Y (%b)")
 
