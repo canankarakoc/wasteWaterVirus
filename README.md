@@ -35,7 +35,7 @@ install.packages(c("tidyverse", "readxl", "forecast", "zoo", "tseries", "lubrida
 `bsts` is loaded at the top of the script but not used; install it or comment out that line.
 
 1. Put the ten `.xlsx` files in `data/raw/` (see Data availability). `data/README.txt` describes their columns.
-2. Lines 5 and 18 of `code.R` set the working directory and the data path to `~/GitHub/wasteWaterVirus`. Change both to the folder you cloned into.
+2. Open `wasteWaterVirus.Rproj`, or set the working directory to the repository folder. The script reads `data/raw/` relative to it.
 3. Run `code.R` interactively, top to bottom. It prints the model summaries and draws the diagnostic, forecast and cross-correlation plots; the combined cross-correlation figure is built at the end.
 
 Known issue: the norovirus VAR model with all genotypes (`var6.all`, around line 312) cannot be fitted, because the total norovirus series is the sum of genotypes I and II. `summary(var6.all)` stops with "system is computationally singular". Skip that line and continue.

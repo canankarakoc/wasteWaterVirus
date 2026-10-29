@@ -2,7 +2,7 @@
 # PCR copy numbers vs. incidence 
 # Author: Canan Karakoc
 
-setwd("~/GitHub/wasteWaterVirus")
+# run from the project folder (open wasteWaterVirus.Rproj)
 library(tidyverse)
 library(readxl)
 library(forecast)
@@ -15,7 +15,7 @@ library(vars)
 
 # raw data 
 filenames <- list.files("data/raw", pattern="*.xlsx", full.names = F)
-dir_path <-"~/GitHub/wasteWaterVirus/data/raw/"
+dir_path <-"data/raw/"
 
 # I added headers to the data
 
@@ -354,7 +354,7 @@ acf(multiTS8)
 var8 <- VAR(multiTS8, lag.max = 6)
 forecast_multi8 <- forecast(object = var8, h = 5) 
 plot(forecast_multi8) 
-summary(var5) # well... 
+summary(var8) # well... 
 
 # cross correlations
 ff_copy <- diff(extrapolate(freiberg_fluA$copy))
@@ -381,8 +381,8 @@ forecast_multi9 <- forecast(object = var9, h = 5)
 plot(forecast_multi9) # lag 2-3 of copy numbers 
 
 # cross correlations
-fa_copy <- diff(extrapolate(freiberg_rota$copy))
-fa_inc  <- diff(extrapolate(freiberg_rota$incidence))
+fa_copy <- diff(extrapolate(freiberg_astro$copy))
+fa_inc  <- diff(extrapolate(freiberg_astro$incidence))
 Fastro_ccf <- print(ccf(fa_copy, fa_inc)) 
 
 ###############
@@ -394,7 +394,7 @@ FIrota <- auto.arima(diff(freiberg_rota$incidence))
 
 multiTS10  <- ts(data = na.approx(zoo(freiberg_rota[c(4,3)])))
 ndiffs(multiTS10)
-acf(multiTS9)
+acf(multiTS10)
 
 #take the diff
 multiTS10_diff <- diff(multiTS10, differences = 1)
