@@ -1,0 +1,12 @@
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# macOS
+.DS_Store
+
+# Data stay local (colleague's data, available on request); keep only the description
+data/*
+!data/README.txt
