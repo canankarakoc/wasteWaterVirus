@@ -42,7 +42,7 @@ Known issue: the norovirus VAR model with all genotypes (`var6.all`, around line
 
 ## Data availability
 
-The data are not included in this repository. They were produced by [colleague's name and institution]; please contact them for access. `data/README.txt` describes the file structure the script expects.
+The data are not included in this repository. They were produced by Rene Kallies, Helmholtz Centre for Environmental Research - UFZ; please contact them for access. `data/README.txt` describes the file structure the script expects.
 
 ## License
 
